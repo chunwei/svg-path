@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG</title>
+  <script src='./svg.min.js'></script>
+  <style>
+    svg.mysvg{
+      width: 500px;
+      height: 500px;
+      border: solid 2px red;
+    }
+    path{
+      stroke-width: 2px;
+      z-index: 1;
+    }
+    circle{
+      stroke: black;
+      stroke-width: 2px;
+      fill: red;
+    }
+    .block{
+      fill: grey;
+    }
+    .node{
+      fill: green;
+      stroke: black;
+    }
+    #canvas-container{
+      width:500px;
+      height: 200px;
+      position: relative;
+      transform: scale(0.8);
+    }
+    #canvas-container .edgesvg{
+      width:100%;
+      height: 100%;
+    }
+    #node1,#node2{
+      background-color: rgba(255, 242, 240, 0.288);
+      border:solid 1px salmon;
+      width:60px;
+      height: 60px;
+      position: absolute;
+    }
+    #node1{
+      top:10px;
+      left:10px;
+    }
+    #node2{
+      right:10px;
+      bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id='canvas-container'>
+    <div id='node1'></div>
+    <div id='node2'></div>
+    <svg class="edgesvg">
+      <path d="M 70,40 C220,40 220,160 430,160" style="fill:none;stroke:coral;"></path>
+      <path d="M 40,70 C40,100 460,100 460,130" style="fill:none;stroke:seagreen;"></path>
+    </svg>
+  </div>
+  <script>
+  </script>
+
+  <div id="drawing"></div>
+  <script>
+    // build graphics
+var draw = SVG().addTo('body').size('100%', 600)
+
+function grid(m,n,w,h){
+	for(var x=0;x<m;x++){
+  	for(var y=0;y<n;y++){
+    	 var r=draw.rect(w, h).x(x*w).y(y*h)
+       r.fill('#eee').stroke({width:1, color: '#ddd'})
+       if(x==2&&y==2){
+       r.fill('blue')
+       }
+       if(x==0||x==4){
+       r.fill('skyblue')
+       }
+       if(y==0||y==4){
+       r.fill('#26aa5a');
+       }
+       // like padding?
+       draw.rect(w-20, h-20).x(x*w+10).y(y*h+10).fill('#fff').attr('fill-opacity',0.2)
+    }
+  }
+}
+grid(5,5,100,100)
+
+function edges(m,n,w,h){
+	for(var x=0;x<m;x++){
+  	for(var y=0;y<n;y++){
+      if(y==0){
+        var ps=`M ${x*w+w/2},100 C ${x*w+w/2},150 250,150 250,200`
+        draw.path(ps).stroke({width:1, color: 'green'}).fill('none')
+      }
+      if(y==4){
+        var ps=`M ${x*w+w/2},${y*h} C ${x*w+w/2},${y*h-h/2} 250,350 250,300`
+        draw.path(ps).stroke({width:1, color: 'green'}).fill('none')
+      }
+      if(x==0){
+        var ps=`M 100,${y*h+h/2} C 150,${y*h+h/2} 150,250 200,250`
+        draw.path(ps).stroke({width:1, color: 'blue'}).fill('none')
+      }
+      if(x==4){
+        var ps=`M ${x*w},${y*h+h/2} C ${x*w-w/2},${y*h+h/2} 350,250 300,250`
+        draw.path(ps).stroke({width:1, color: 'blue'}).fill('none')
+      }
+    }
+  }
+}
+edges(5,5,100,100)
+  </script>
+
+</body>
+</html>
